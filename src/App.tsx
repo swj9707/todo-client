@@ -7,8 +7,8 @@ import Todo from './component/Todo';
 import AddTodo from './component/AddTodo';
 
 function App() {
+  
   const [items, setItems] = useState<ItemInterface[]>([]);
- 
 
   const addItem = (item : ItemInterface) => {
     item.id = "ID-" + items.length;
