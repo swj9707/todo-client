@@ -20,17 +20,17 @@ const Todo = (props: { item : ItemInterface, key : string, editItem : any, delet
     const turnOnReadOnly = (e: { key: string; }) => { 
         if(e.key === "Enter"){
             setReadOnly(true);
+            editItem(item);
         }
     }
 
     const editEventHander = (e: React.ChangeEvent<HTMLInputElement>) => {
-        item.title = e.target.value;
-        editItem();
+        setItem({...item, title : e.target.value});
     }
 
     const checkboxEventHandler = (e : React.ChangeEvent<HTMLInputElement>) =>{
         item.done = e.target.checked;
-        editItem();
+        editItem(item);
     }
 
     return (
