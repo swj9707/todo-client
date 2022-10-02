@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ItemInterface from './Store/Type/ItemInterface';
@@ -9,6 +9,26 @@ import AddTodo from './component/AddTodo';
 function App() {
   
   const [items, setItems] = useState<ItemInterface[]>([]);
+
+  const requestOptions = {
+    method : "GET",
+    headers : {"Content-Type" : "application/json"},
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:8080/todo", requestOptions)
+    .then((response) => response.json())
+    .then(
+      (response) => {
+        setItems(response.data);
+      },
+      (error) =>{
+
+      }
+    )
+  }, []);
+
+  
 
   const addItem = (item : ItemInterface) => {
     item.id = "ID-" + items.length;
