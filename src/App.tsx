@@ -1,29 +1,33 @@
-import React, {useState} from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import ItemInterface from './Store/Type/ItemInterface';
 import {Paper, List, Container} from "@mui/material"
 import Todo from './component/Todo';
 import AddTodo from './component/AddTodo';
+import { call } from './service/ApiService';
 
 function App() {
   
   const [items, setItems] = useState<ItemInterface[]>([]);
 
+  useEffect(() => {
+    call("/todo/retrieve", "POST", null)
+    .then((response : any) => setItems(response.data));
+  }, []);
+
   const addItem = (item : ItemInterface) => {
-    item.id = "ID-" + items.length;
-    item.done = false
-    setItems([...items, item]);
-    console.log("items : ", items);
+    call("/todo", "POST", item)
+    .then((response) => setItems(response.data));
   }
 
   const deleteItem = (item : ItemInterface) => {
-    const newItems = items.filter(e => e.id !== item.id);
-    setItems([...newItems]);
+    call("/todo", "DELETE", item)
+    .then((response) => setItems(response.data));
   }
 
-  const editItem = () =>{
-    setItems([...items])
+  const editItem = (item : ItemInterface) =>{
+    call("/todo", "PUT", item)
+    .then((response) => setItems(response.data));
   }
 
   let todoItems = items.length > 0 && (
